@@ -1,9 +1,23 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import { shallow } from 'enzyme'
+import toJson from 'enzyme-to-json'
+import NotePageNav from './NotePageNav'
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe(`NotePageNav component`, () => {
+  const props = {
+    folder: {
+      "name": "Important"
+    }
+  }
+
+  it('renders a .NotePageNav by default', () => {
+    const wrapper = shallow(<NotePageNav />)
+    expect(toJson(wrapper)).toMatchSnapshot()
+  })
+
+  it('renders a h3 with folder name when in props', () => {
+    const h3 = shallow(<NotePageNav {...props} />)
+      .find('.NotePageNav__folder-name')
+    expect(toJson(h3)).toMatchSnapshot()
+  })
+})
