@@ -14,7 +14,7 @@ export default class NotePageNav extends React.Component {
             params: {}
         }
     }
-    static contextType = ApiContext
+    static contextType = ApiContext;
 
     render() {
         const { notes, folders } = this.context

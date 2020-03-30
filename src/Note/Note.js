@@ -32,7 +32,7 @@ export default class Note extends React.Component {
             this.props.onDeleteNote(noteId)
         })
         .catch(error => {
-            console.log({error})
+            console.error({error})
         })
     }
     render() {

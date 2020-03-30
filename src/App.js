@@ -4,16 +4,19 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import NoteListNav from './NoteListNav/NoteListNav';
 import NotePageNav from './NotePageNav/NotePageNav';
 import NoteListMain from './NoteListMain/NoteListMain';
-import NotePageMain from './NotePageMain/NotePageMain'
+import NotePageMain from './NotePageMain/NotePageMain';
+import AddFolder from './AddFolder/AddFolder';
+import AddNote from './AddNote/AddNote';
 import ApiContext from './ApiContext';
 import config from './config';
+import HandleError from './HandleError';
 import './App.css';
 
 
 class App extends Component {
   state = {
     notes: [],
-    folders: []
+    folders: [],
   };
 
   componentDidMount() {
@@ -37,6 +40,24 @@ class App extends Component {
       });
   }
 
+  handleAddFolder = folder => {
+    this.setState({
+      folders: [
+        ...this.state.folders,
+        folder
+      ]
+    })
+  }
+
+  handleAddNote = note => {
+    this.setState({
+      notes: [
+        ...this.state.notes,
+        note
+      ]
+    })
+  }
+
   handleDeleteNote = noteId => {
     this.setState({
       notes: this.state.notes.filter(note => note.id !== noteId)
@@ -45,36 +66,60 @@ class App extends Component {
   
   renderNavRoutes() {
     return (
+      <HandleError>
         <>
-          {['/', '/folder/:folderId'].map(path => (
+          {['/', '/folder/:folderId'].map(path => 
             <Route 
               exact
               key={path}
               path={path}
               component={NoteListNav}
             />
-          ))}
-          <Route path="/note/:noteId" component={NotePageNav} />
-          <Route path="/add-folder" component={NotePageNav} />
-          <Route path="/add-note" component={NotePageNav} />
+          )}
+          <Route 
+            path="/note/:noteId" 
+            component={NotePageNav} 
+          />
+          <Route 
+            path="/add-folder" 
+            component={NotePageNav} 
+          />
+          <Route 
+            path="/add-note" 
+            component={NotePageNav} 
+          />
         </>
-    );
+      </HandleError>
+    )
   }
 
   renderMainRoutes() {
     return (
+      <HandleError>
         <>
-          {['/', '/folder/:folderId'].map(path => (
+          {['/', '/folder/:folderId'].map(path => 
             <Route 
               exact
               key={path}
               path={path}
               component={NoteListMain}
             />
-          ))}
-          <Route path='/note/:noteId' component={NotePageMain} />
+          )}
+          <Route 
+            path='/note/:noteId' 
+            component={NotePageMain} 
+          />
+          <Route 
+            path='/add-folder' 
+            component={AddFolder} 
+          />
+          <Route 
+            path='/add-note' 
+            component={AddNote} 
+          />
         </>
-    );
+      </HandleError>
+    )
   }
 
 
@@ -82,9 +127,13 @@ class App extends Component {
     const value = {
       notes: this.state.notes,
       folders: this.state.folders,
-      deleteNote: this.handleDeleteNote
-    };
+      addFolder: this.handleAddFolder,
+      addNote: this.handleAddNote,
+      deleteNote: this.handleDeleteNote,
+    }
+
     return (
+      <HandleError>
       <ApiContext.Provider value={value}>
         <div className="App">
           <nav className="App__nav">{this.renderNavRoutes()}</nav>
@@ -97,7 +146,8 @@ class App extends Component {
           <main className="App__main">{this.renderMainRoutes()}</main>
         </div>
       </ApiContext.Provider>
-    );
+      </HandleError>
+    )
   }
 }
 
