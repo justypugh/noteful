@@ -14,7 +14,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-15": "^1.4.1",
     "enzyme-to-json": "^3.5.0",
-    "knex": "^0.21.1",
+    "knex": "^2.4.0",
     "pg": "^8.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
